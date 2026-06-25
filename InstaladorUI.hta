@@ -365,7 +365,8 @@
             // Verificar se o Office já está instalado
         try {
             shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Office\\ClickToRun\\Configuration\\ProductReleaseIds");
-            if (confirm("[AVISO] Foi detectada uma instalacao existente do Microsoft Office neste computador.\n\nE altamente recomendado remover a versao anterior antes de instalar uma nova.\n\nDeseja remover o Office existente agora? (Pode demorar alguns minutos)")) {
+            var result = shell.Popup("[AVISO] Foi detectada uma instalacao existente do Microsoft Office neste computador.\n\nE altamente recomendado remover a versao anterior antes de instalar uma nova.\n\nDeseja remover o Office existente agora? (Pode demorar alguns minutos)", 0, "Office AutoDeployer Pro", 4 + 48);
+            if (result === 6) { // 6 = Yes/Sim
                 removerOfficeAntigo();
             }
         } catch(e) {
