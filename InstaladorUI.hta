@@ -230,7 +230,7 @@
         .author-section {
             background-color: #11141d;
             border-top: 1px solid #2a2d39;
-            padding: 20px 30px;
+            padding: 25px 30px;
             font-size: 13px;
             color: #888;
             display: flex;
@@ -238,19 +238,27 @@
             align-items: center;
             margin-top: auto;
         }
+        .author-info {
+            flex: 1;
+        }
         .author-info strong {
             color: #d4af37;
-            font-size: 14px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
         }
         .author-links {
             display: flex;
-            gap: 15px;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            flex: 2;
         }
         .author-link {
             color: #a0a0a0;
             text-decoration: none;
             transition: color 0.2s;
             cursor: pointer;
+            white-space: nowrap;
         }
         .author-link:hover {
             color: #d4af37;
@@ -263,25 +271,30 @@
             background-color: #0b0d14;
             border: 1px solid #2a2d39;
             border-radius: 8px;
-            padding: 15px;
+            padding: 18px 20px;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: 15px;
         }
         .terms-container input[type="checkbox"] {
-            margin-top: 3px;
+            margin-top: 4px;
             cursor: pointer;
             accent-color: #d4af37;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
         }
         .terms-text {
             font-size: 13px;
-            color: #a0a0a0;
-            line-height: 1.4;
+            color: #9ca3af;
+            line-height: 1.5;
+            text-align: justify;
         }
         .terms-text strong {
-            color: #d1d5db;
+            color: #e5e7eb;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
         }
 
         /* Status Box */
@@ -358,7 +371,8 @@
                 <div class="terms-container">
                     <input type="checkbox" id="termsCheckbox" onchange="toggleStartBtn()">
                     <div class="terms-text">
-                        <strong>Termos de Uso e Responsabilidade:</strong> Ao prosseguir com a instalação, o usuário declara concordar com os termos de uso deste software, assumindo total responsabilidade por sua utilização em conformidade com as leis de direitos autorais e propriedade intelectual do Brasil e exterior.
+                        <strong>Termos de Uso e Responsabilidade:</strong> 
+                        Ao prosseguir com a instalação, o usuário declara concordar plenamente com os termos de uso deste software, assumindo total responsabilidade civil e penal por sua utilização. O usuário compromete-se a utilizar a ferramenta em estrita conformidade com as leis de direitos autorais e propriedade intelectual vigentes no Brasil e no exterior, isentando o desenvolvedor de quaisquer responsabilidades por uso indevido.
                     </div>
                 </div>
 
@@ -423,8 +437,8 @@
     </div>
 
     <script>
-        // Resize window to a nice app size (aumentado para evitar corte)
-        window.resizeTo(900, 750);
+        // Resize window to a nice app size (aumentado para evitar corte e barra de rolagem)
+        window.resizeTo(950, 800);
         
         var shell = new ActiveXObject("WScript.Shell");
         var fso = new ActiveXObject("Scripting.FileSystemObject");
