@@ -24,7 +24,7 @@ O **Office AutoDeployer Pro** foi criado para simplificar o processo muitas veze
 - 🇧🇷 **Localização Nativa:** Todos os aplicativos são configurados para instalação em `pt-BR` por padrão.
 - 🔄 **Atualizações Automáticas:** As configurações XML já habilitam o download do pacote contendo os patches de segurança e recursos mais recentes.
 - 🔓 **Ativação Definitiva (Ohook):** Integração limpa com o *Microsoft Activation Scripts (MAS)*. Diferente dos antigos ativadores KMS que expiram a cada 180 dias, o método Ohook é permanente, não detectado como malware e não exige renovações em segundo plano.
-- 💻 **Design Hacker-Friendly:** Interface de terminal estilizada, colorida, segura contra falhas de codificação (UTF-8/ASCII) e que previne fechamentos abruptos.
+- �️ **Interface Gráfica Moderna:** Conta agora com uma UI (User Interface) elegante e intuitiva, proporcionando uma experiência visual passo a passo sem a necessidade de usar o terminal.
 
 ## 🛠️ Pré-requisitos
 
@@ -35,19 +35,22 @@ O **Office AutoDeployer Pro** foi criado para simplificar o processo muitas veze
 ## 🚀 Como Utilizar
 
 1. **Faça o download / Extraia** todos os arquivos para uma pasta local (Ex: `C:\Office-ativado`).
-2. Clique com o botão direito do mouse sobre o arquivo **`Instalar_e_Ativar.cmd`**.
+2. Clique com o botão direito do mouse sobre o arquivo **`Instalar_e_Ativar.cmd`** (ou no atalho **`Instalar Office`**).
 3. Selecione a opção **"Executar como Administrador"**.
-4. Siga as instruções na tela:
-   - Se o script detectar uma versão antiga, responda `S` para remover.
-   - Digite `1` para Office 2024 ou `2` para Office 365.
-5. Aguarde o download e a barra de progresso da Microsoft.
-6. Ao finalizar, o script confirmará que a ativação permanente foi aplicada com sucesso!
+4. Uma **Interface Gráfica Moderna** será aberta na sua tela.
+5. Siga os passos visuais:
+   - Se o script detectar uma versão antiga, uma janela de aviso aparecerá perguntando se você deseja removê-la (Recomendado).
+   - Selecione na caixa de opções qual versão deseja instalar (Office 2024 ProPlus ou Office 365 ProPlus).
+   - Clique no botão dourado **"Iniciar Instalação Automática"**.
+6. Acompanhe o status na tela (Baixar ➔ Instalar ➔ Ativar).
+7. Ao finalizar, aparecerá a mensagem verde informando que o Office foi instalado e ativado com sucesso!
 
 ## ⚙️ Estrutura de Arquivos
 
 | Arquivo | Descrição |
 | :--- | :--- |
-| `Instalar_e_Ativar.cmd` | O cérebro do projeto. Script em lote principal que gerencia o fluxo de usuário, remoção, instalação e ativação. |
+| `Instalar_e_Ativar.cmd` | O inicializador principal. Valida privilégios de administrador e inicia a Interface Gráfica. |
+| `InstaladorUI.hta` | A nova interface gráfica moderna que gerencia todo o fluxo visual. |
 | `setup.exe` | O executável oficial do Microsoft Office Deployment Tool (ODT). |
 | `Configuracao.xml` | Arquivo de regras para o download e instalação da versão Office 2024 ProPlus. |
 | `configuration-Office365-x64.xml` | Arquivo de regras para o download e instalação da versão Office 365 ProPlus (+ Visio e Project). |
