@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Office AutoDeployer Pro</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <HTA:APPLICATION 
+        ID="OfficeDeployer" 
+        APPLICATIONNAME="Office AutoDeployer Pro" 
+        ICON="setup.exe"
+        SCROLL="no" 
+        SINGLEINSTANCE="yes" 
+        WINDOWSTATE="normal"
+        INNERBORDER="no"
+        CONTEXTMENU="no"
+        SELECTION="no"
+        BORDER="thin"
+    />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f111a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
+            background: linear-gradient(90deg, #1a1d29 0%, #0f111a 100%);
+            border-bottom: 1px solid #333;
+        }
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-left: 15px;
+            letter-spacing: 1px;
+        }
+        .logo-text span {
+            color: #d4af37;
+        }
+        .container {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .card {
+            background-color: #1a1d29;
+            border: 1px solid #2a2d39;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* Select Version */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f111a;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+        select:focus {
+            border-color: #d4af37;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #d4af37 0%, #b5952f 100%);
+            color: #000;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        /* Progress Steps */
+        .steps {
+            display: none;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: #333;
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+        }
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1a1d29;
+            border: 2px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #888;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .step.active .step-icon {
+            border-color: #d4af37;
+            color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .step.done .step-icon {
+            background-color: #d4af37;
+            border-color: #d4af37;
+            color: #000;
+        }
+        .step-text {
+            font-size: 14px;
+            color: #888;
+        }
+        .step.active .step-text {
+            color: #fff;
+        }
+        .step.done .step-text {
+            color: #d4af37;
+        }
+
+        /* Status Box */
+        .status-box {
+            display: none;
+            background-color: rgba(46, 125, 50, 0.1);
+            border: 1px solid #2e7d32;
+            border-radius: 8px;
+            padding: 20px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .status-icon {
+            background-color: #2e7d32;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        .status-text h3 {
+            margin: 0 0 5px 0;
+            color: #4caf50;
+            font-size: 18px;
+        }
+        .status-text p {
+            margin: 0;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #d4af37, #8a7322); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #000;">E</div>
+        <div class="logo-text">Office-AutoDeployer-<span>Pro</span></div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            
+            <div id="screen-config">
+                <h2 class="title">Configuração de Instalação</h2>
+                <p class="subtitle">Selecione a versão desejada para instalar e ativar.</p>
+                
+                <div class="form-group">
+                    <label>Versão do Office</label>
+                    <select id="officeVersion">
+                        <option value="1">Microsoft Office 2024 ProPlus (Recomendado)</option>
+                        <option value="2">Microsoft Office 365 ProPlus (+ Visio e Project)</option>
+                    </select>
+                </div>
+
+                <button class="btn" id="btnStart" onclick="startProcess()">Iniciar Instalação Automática</button>
+            </div>
+
+            <div id="screen-progress" style="display: none;">
+                <h2 class="title" style="text-align: center; margin-bottom: 40px;">Tudo pronto em poucos cliques!</h2>
+                
+                <div class="steps" id="steps-container" style="display: flex;">
+                    <div class="step active" id="step-1">
+                        <div class="step-icon">⬇</div>
+                        <div class="step-text">Baixar</div>
+                    </div>
+                    <div class="step" id="step-2">
+                        <div class="step-icon">⚙</div>
+                        <div class="step-text">Instalar</div>
+                    </div>
+                    <div class="step" id="step-3">
+                        <div class="step-icon">🔑</div>
+                        <div class="step-text">Ativar</div>
+                    </div>
+                    <div class="step" id="step-4">
+                        <div class="step-icon">✔</div>
+                        <div class="step-text">Pronto</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <p id="current-action" style="color: #e0e0e0; font-size: 16px; margin-bottom: 10px;">Preparando...</p>
+                    <p id="current-subaction" style="color: #888; font-size: 13px;">Aguarde, não feche esta janela.</p>
+                </div>
+
+                <div class="status-box" id="success-box">
+                    <div class="status-icon">✔</div>
+                    <div class="status-text">
+                        <h3>Office instalado e ativado com sucesso!</h3>
+                        <p>Aproveite todos os recursos do Microsoft Office.</p>
+                    </div>
+                </div>
+
+                <button class="btn" id="btnFinish" style="display: none; margin-top: 20px;" onclick="window.close()">Concluir</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Resize window to a nice app size
+        window.resizeTo(800, 600);
+        
+        var shell = new ActiveXObject("WScript.Shell");
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        
+        // Obter o diretório atual
+        var loc = window.location.pathname;
+        if (loc.charAt(0) == '/') loc = loc.substr(1);
+        loc = unescape(loc).replace(/\//g, '\\');
+        var currentDir = fso.GetParentFolderName(loc);
+        shell.CurrentDirectory = currentDir;
+
+        // Verificar Admin
+        window.onload = function() {
+            var isAdminCode = shell.Run("cmd.exe /c openfiles >nul 2>&1", 0, true);
+            if (isAdminCode !== 0) {
+                alert("ERRO DE PERMISSÃO!\n\nEste aplicativo precisa ser executado como Administrador.\nPor favor, feche e abra o arquivo 'Instalar_e_Ativar.cmd' como Administrador.");
+                window.close();
+            }
+
+            // Verificar se o Office já está instalado
+            try {
+                shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Office\\ClickToRun\\Configuration\\ProductReleaseIds");
+                if (confirm("[AVISO] Foi detectada uma instalação existente do Microsoft Office neste computador.\nÉ altamente recomendado remover a versão anterior antes de instalar uma nova.\n\nDeseja remover o Office existente agora? (Pode demorar alguns minutos)")) {
+                    removerOfficeAntigo();
+                }
+            } catch(e) {
+                // Não está instalado, segue normal
+            }
+        };
+
+        function removerOfficeAntigo() {
+            try {
+                var xmlPath = currentDir + "\\remove-office.xml";
+                var xmlContent = '<Configuration><Remove All="TRUE" /><Display Level="None" AcceptEULA="TRUE" /></Configuration>';
+                var file = fso.CreateTextFile(xmlPath, true);
+                file.Write(xmlContent);
+                file.Close();
+                
+                alert("Iniciando remoção do Office existente. O processo pode demorar alguns minutos. Pressione OK para continuar.");
+                shell.Run('cmd.exe /c start /wait setup.exe /configure "' + xmlPath + '"', 0, true);
+                
+                if (fso.FileExists(xmlPath)) {
+                    fso.DeleteFile(xmlPath);
+                }
+                alert("Remoção concluída com sucesso! Agora você pode prosseguir com a nova instalação.");
+            } catch(e) {
+                alert("Erro ao tentar remover o Office antigo: " + e.message);
+            }
+        }
+
+        function updateStep(stepNum, status) {
+            var step = document.getElementById("step-" + stepNum);
+            if (status === 'active') {
+                step.className = "step active";
+            } else if (status === 'done') {
+                step.className = "step done";
+                step.innerHTML = '<div class="step-icon">✔</div><div class="step-text" style="margin-top: 10px;">Concluído</div>';
+            }
+        }
+
+        function setActionText(main, sub) {
+            document.getElementById("current-action").innerText = main;
+            document.getElementById("current-subaction").innerText = sub;
+        }
+
+        function startProcess() {
+            var version = document.getElementById("officeVersion").value;
+            
+            document.getElementById("screen-config").style.display = "none";
+            document.getElementById("screen-progress").style.display = "block";
+
+            var xmlFile = (version === "2") ? "configuration-Office365-x64.xml" : "Configuracao.xml";
+            var officeName = (version === "2") ? "Office 365 ProPlus" : "Office 2024 ProPlus";
+
+            // Step 1: Remove old versions (Optional, but we can do it silently or skip. Since UI needs to be automated, let's check and remove silently if found, or just proceed to install as setup.exe handles upgrades usually).
+            // Actually, original script asks. Let's just run the installation directly to keep it simple and automatic, or we can execute the removal script.
+            
+            // Let's use setTimeout to allow UI to render
+            setTimeout(function() {
+                downloadAndInstall(xmlFile, officeName);
+            }, 1000);
+        }
+
+        function downloadAndInstall(xmlFile, officeName) {
+            updateStep(1, 'done');
+            updateStep(2, 'active');
+            setActionText("Instalando " + officeName + "...", "Uma janela do instalador pode aparecer. Aguarde a conclusão.");
+
+            setTimeout(function() {
+                try {
+                    // Executa o setup.exe com o XML selecionado e aguarda concluir
+                    var cmd = 'cmd.exe /c start /wait setup.exe /configure "' + xmlFile + '"';
+                    shell.Run(cmd, 0, true);
+                    
+                    activateOffice();
+                } catch(e) {
+                    alert("Erro na instalação: " + e.message);
+                }
+            }, 500);
+        }
+
+        function activateOffice() {
+            updateStep(2, 'done');
+            updateStep(3, 'active');
+            setActionText("Ativando o Office...", "Aplicando ativação permanente (Ohook). Isso pode levar alguns segundos.");
+
+            setTimeout(function() {
+                try {
+                    // Executa o script de ativação MAS
+                    var psCmd = 'powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command "& ([ScriptBlock]::Create((New-Object Net.WebClient).DownloadString(\'https://get.activated.win\'))) /Ohook"';
+                    shell.Run(psCmd, 0, true);
+                    
+                    finishProcess();
+                } catch(e) {
+                    alert("Erro na ativação: " + e.message);
+                }
+            }, 500);
+        }
+
+        function finishProcess() {
+            updateStep(3, 'done');
+            updateStep(4, 'done');
+            
+            document.getElementById("current-action").style.display = "none";
+            document.getElementById("current-subaction").style.display = "none";
+            
+            var successBox = document.getElementById("success-box");
+            successBox.style.display = "flex";
+
+            document.getElementById("btnFinish").style.display = "block";
+        }
+    </script>
+</body>
+</html>
