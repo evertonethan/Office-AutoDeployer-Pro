@@ -279,7 +279,7 @@
         }
         .author-links {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
             justify-content: flex-end;
             flex: 2;
@@ -290,6 +290,8 @@
             transition: color 0.2s;
             cursor: pointer;
             white-space: nowrap;
+            margin-left: 8px;
+            margin-right: 8px;
         }
         .author-link:hover {
             color: #d4af37;
@@ -322,12 +324,78 @@
             text-align: justify;
         }
         .terms-text strong {
-            color: #e5e7eb;
+            color: #d4af37;
             font-size: 14px;
             display: block;
             margin-bottom: 5px;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .terms-text strong:hover {
+            color: #dfbc45;
         }
 
+        /* Modal Terms */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #161824;
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #2a2d39;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            margin: 0;
+            color: #d4af37;
+            font-size: 18px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            color: #d1d5db;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        .modal-body p {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
         /* Status Box */
         .status-box {
             display: none;
@@ -402,7 +470,7 @@
                 <div class="terms-container">
                     <input type="checkbox" id="termsCheckbox" onchange="toggleStartBtn()">
                     <div class="terms-text">
-                        <strong>Termos de Uso e Responsabilidade:</strong> 
+                        <strong onclick="openTermsModal()">Ler Termos de Uso e Responsabilidade completos</strong> 
                         Ao prosseguir com a instalação, o usuário declara concordar plenamente com os termos de uso deste software, assumindo total responsabilidade civil e penal por sua utilização. O usuário compromete-se a utilizar a ferramenta em estrita conformidade com as leis de direitos autorais e propriedade intelectual vigentes no Brasil e no exterior, isentando o desenvolvedor de quaisquer responsabilidades por uso indevido.
                     </div>
                 </div>
@@ -467,6 +535,23 @@
         </div>
     </div>
 
+    <!-- Modal de Termos de Uso -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Termos de Uso e Responsabilidade</h3>
+                <button class="modal-close" onclick="closeTermsModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Ao prosseguir com a instalação e utilização deste software, o usuário declara que leu, compreendeu e concorda integralmente com os presentes Termos de Uso.</p>
+                <p>O usuário é o único responsável pela forma como utiliza esta ferramenta, comprometendo-se a empregá-la em conformidade com a legislação vigente, incluindo as normas relacionadas aos direitos autorais, propriedade intelectual, proteção de dados e demais disposições legais aplicáveis no Brasil e, quando aplicável, em outros países.</p>
+                <p>Este software é fornecido para fins lícitos e legítimos. É expressamente proibida sua utilização para qualquer atividade ilegal, fraudulenta ou que viole direitos de terceiros.</p>
+                <p>O desenvolvedor não se responsabiliza por danos, prejuízos, perdas, sanções ou quaisquer consequências decorrentes do uso indevido, inadequado ou em desacordo com a legislação aplicável, sendo tais responsabilidades de exclusiva responsabilidade do usuário.</p>
+                <p>Ao instalar ou utilizar este software, o usuário reconhece e aceita integralmente as condições estabelecidas neste termo.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Resize window to a nice app size (aumentado para evitar corte e barra de rolagem)
         window.resizeTo(950, 800);
@@ -474,6 +559,15 @@
         var shell = new ActiveXObject("WScript.Shell");
         var fso = new ActiveXObject("Scripting.FileSystemObject");
         
+        // Funções do Modal de Termos
+        function openTermsModal() {
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+        
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
         // Função para habilitar botão de iniciar
         function toggleStartBtn() {
             var checkbox = document.getElementById("termsCheckbox");
