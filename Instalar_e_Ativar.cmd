@@ -34,13 +34,8 @@ echo.
 :: Verificacao de privilegios de administrador
 openfiles >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ==============================================================================
-    echo ERRO: ESTE SCRIPT PRECISA SER EXECUTADO COMO ADMINISTRADOR
-    echo ==============================================================================
-    echo.
-    echo Por favor, clique com o botao direito no arquivo e selecione "Executar como Administrador".
-    echo.
-    pause
+    echo Elevando privilegios para Administrador...
+    powershell -Command "Start-Process -FilePath '%0' -Verb RunAs"
     exit /b
 )
 
