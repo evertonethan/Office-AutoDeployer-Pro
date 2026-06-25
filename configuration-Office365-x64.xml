@@ -1,0 +1,34 @@
+<Configuration>
+  <Add OfficeClientEdition="64" Channel="Current">
+    <Product ID="O365ProPlusRetail">
+      <Language ID="pt-br" />
+      
+      <!-- SELEÇÃO DE FERRAMENTAS: -->
+      <!-- Por padrão, TODAS as ferramentas serão instaladas. -->
+      <!-- Para NÃO instalar um aplicativo específico, remova os comentários (<!- - e - ->) da linha correspondente abaixo: -->
+      
+      <!-- <ExcludeApp ID="Access" /> -->
+      <!-- <ExcludeApp ID="Excel" /> -->
+      <!-- <ExcludeApp ID="Lync" /> -->
+      <!-- <ExcludeApp ID="OneDrive" /> -->
+      <!-- <ExcludeApp ID="OneNote" /> -->
+      <!-- <ExcludeApp ID="Outlook" /> -->
+      <!-- <ExcludeApp ID="PowerPoint" /> -->
+      <!-- <ExcludeApp ID="Publisher" /> -->
+      <!-- <ExcludeApp ID="Teams" /> -->
+      <!-- <ExcludeApp ID="Word" /> -->
+      
+    </Product>
+    <Product ID="VisioProRetail">
+      <Language ID="pt-br" />
+    </Product>
+    <Product ID="ProjectProRetail">
+      <Language ID="pt-br" />
+    </Product>
+  </Add>
+
+  <Updates Enabled="TRUE" Channel="Current" />
+  <Display Level="Full" AcceptEULA="TRUE" />
+  <Property Name="AUTOACTIVATE" Value="1" />
+
+</Configuration>
