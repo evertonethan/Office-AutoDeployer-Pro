@@ -99,9 +99,13 @@
             color: #d1d5db;
             font-weight: 500;
         }
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
         select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 40px 14px 16px;
             background-color: #0b0d14;
             border: 1px solid #374151;
             color: #f3f4f6;
@@ -111,10 +115,27 @@
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        /* Remove seta padrão no IE (HTA) */
+        select::-ms-expand {
+            display: none;
         }
         select:focus {
             border-color: #d4af37;
             box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 12px;
+            color: #d4af37;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
         }
         
         .btn {
@@ -267,10 +288,12 @@
                 
                 <div class="form-group">
                     <label>Versão do Office</label>
-                    <select id="officeVersion">
-                        <option value="1">Microsoft Office 2024 ProPlus (Recomendado)</option>
-                        <option value="2">Microsoft Office 365 ProPlus (+ Visio e Project)</option>
-                    </select>
+                    <div class="select-wrapper">
+                        <select id="officeVersion">
+                            <option value="1">Microsoft Office 2024 ProPlus (Recomendado)</option>
+                            <option value="2">Microsoft Office 365 ProPlus (+ Visio e Project)</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button class="btn" id="btnStart" onclick="startProcess()">Iniciar Instalação Automática</button>
