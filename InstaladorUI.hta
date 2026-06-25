@@ -46,71 +46,97 @@
         }
         .container {
             flex: 1;
-            padding: 40px;
+            padding: 20px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
         .title {
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: 10px;
             color: #e0e0e0;
+            font-weight: 600;
         }
         .subtitle {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 40px;
+            font-size: 15px;
+            color: #a0a0a0;
+            margin-bottom: 35px;
             text-align: center;
         }
         .card {
-            background-color: #1a1d29;
+            background-color: #161824;
             border: 1px solid #2a2d39;
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 35px 40px;
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
         }
         
+        /* Efeito de brilho no topo do card estilo Tailwind */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            opacity: 0.8;
+        }
+
         /* Select Version */
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         label {
             display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #ccc;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #d1d5db;
+            font-weight: 500;
         }
         select {
             width: 100%;
-            padding: 12px;
-            background-color: #0f111a;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 6px;
+            padding: 14px 16px;
+            background-color: #0b0d14;
+            border: 1px solid #374151;
+            color: #f3f4f6;
+            border-radius: 8px;
             font-size: 16px;
             outline: none;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
         select:focus {
             border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
         
         .btn {
             background: linear-gradient(135deg, #d4af37 0%, #b5952f 100%);
-            color: #000;
+            color: #111827;
             border: none;
-            padding: 14px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 6px;
+            padding: 16px 24px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(212, 175, 55, 0.3), 0 2px 4px -1px rgba(212, 175, 55, 0.2);
         }
         .btn:hover {
-            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(212, 175, 55, 0.4), 0 4px 6px -2px rgba(212, 175, 55, 0.2);
+            background: linear-gradient(135deg, #dfbc45 0%, #c2a138 100%);
+        }
+        .btn:active {
+            transform: translateY(1px);
         }
         .btn:disabled {
             background: #444;
@@ -292,8 +318,8 @@
     </div>
 
     <script>
-        // Resize window to a nice app size
-        window.resizeTo(800, 600);
+        // Resize window to a nice app size (aumentado para evitar corte)
+        window.resizeTo(850, 650);
         
         var shell = new ActiveXObject("WScript.Shell");
         var fso = new ActiveXObject("Scripting.FileSystemObject");
@@ -314,14 +340,14 @@
             }
 
             // Verificar se o Office já está instalado
-            try {
-                shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Office\\ClickToRun\\Configuration\\ProductReleaseIds");
-                if (confirm("[AVISO] Foi detectada uma instalação existente do Microsoft Office neste computador.\nÉ altamente recomendado remover a versão anterior antes de instalar uma nova.\n\nDeseja remover o Office existente agora? (Pode demorar alguns minutos)")) {
-                    removerOfficeAntigo();
-                }
-            } catch(e) {
-                // Não está instalado, segue normal
+        try {
+            shell.RegRead("HKLM\\SOFTWARE\\Microsoft\\Office\\ClickToRun\\Configuration\\ProductReleaseIds");
+            if (confirm("[AVISO] Foi detectada uma instalacao existente do Microsoft Office neste computador.\n\nE altamente recomendado remover a versao anterior antes de instalar uma nova.\n\nDeseja remover o Office existente agora? (Pode demorar alguns minutos)")) {
+                removerOfficeAntigo();
             }
+        } catch(e) {
+            // Não está instalado, segue normal
+        }
         };
 
         function removerOfficeAntigo() {
@@ -332,13 +358,13 @@
                 file.Write(xmlContent);
                 file.Close();
                 
-                alert("Iniciando remoção do Office existente. O processo pode demorar alguns minutos. Pressione OK para continuar.");
+                alert("Iniciando remocao do Office existente. O processo pode demorar alguns minutos. Pressione OK para continuar.");
                 shell.Run('cmd.exe /c start /wait setup.exe /configure "' + xmlPath + '"', 0, true);
                 
                 if (fso.FileExists(xmlPath)) {
                     fso.DeleteFile(xmlPath);
                 }
-                alert("Remoção concluída com sucesso! Agora você pode prosseguir com a nova instalação.");
+                alert("Remocao concluida com sucesso! Agora voce pode prosseguir com a nova instalacao.");
             } catch(e) {
                 alert("Erro ao tentar remover o Office antigo: " + e.message);
             }
